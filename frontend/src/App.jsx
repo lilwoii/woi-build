@@ -23,6 +23,8 @@ import ShadowTrading from "./pages/ShadowTrading";
 import RiskCenter from "./pages/RiskCenter";
 import WOIConsole from "./pages/WOIConsole";
 import WOICommandCenter from "./pages/WOICommandCenter";
+import SituationRoom from "./pages/SituationRoom";
+import WorldPulse from "./pages/WorldPulse";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
@@ -45,6 +47,8 @@ const TABS = [
 { id: "risk", label: "Risk", icon: "🛡️" },
 { id: "woi-console", label: "WOI Console", icon: "🗣️" },
 { id: "woi-command-center", label: "Command Center", icon: "🗣️" },
+{ id: "situation-room", label: "Situation Room", icon: "🌍" },
+{ id: "world-pulse", label: "World Pulse", icon: "🌐" },
 ];
 
 function AppShell() {
@@ -99,6 +103,10 @@ case "risk":
   return <WOIConsole />;
   case "woi-command-center":
   return <WOICommandCenter />;
+  case "situation-room":
+  return <SituationRoom />;
+case "world-pulse":
+  return <WorldPulse />;
     }
   }, [activeTab]);
 

@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from routers.woi_mega_router import router as woi_mega_router
 from routers.woi_chat_router import router as woi_chat_router
 from routers.woi_conversation_router import router as woi_conversation_router
+from routers.woi_situation_router import router as woi_situation_router
 
 import requests
 import shutil
@@ -233,6 +234,7 @@ app.include_router(training_router)
 app.include_router(woi_mega_router)
 app.include_router(woi_chat_router)
 app.include_router(woi_conversation_router)
+app.include_router(woi_situation_router)
 
 clients: set[WebSocket] = set()
 price_cache: Dict[str, float] = {}
