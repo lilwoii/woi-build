@@ -25,6 +25,8 @@ import WOIConsole from "./pages/WOIConsole";
 import WOICommandCenter from "./pages/WOICommandCenter";
 import SituationRoom from "./pages/SituationRoom";
 import WorldPulse from "./pages/WorldPulse";
+import GlobalOps from "./pages/GlobalOps";
+import OpsRouterBoard from "./pages/OpsRouterBoard";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
@@ -49,6 +51,8 @@ const TABS = [
 { id: "woi-command-center", label: "Command Center", icon: "🗣️" },
 { id: "situation-room", label: "Situation Room", icon: "🌍" },
 { id: "world-pulse", label: "World Pulse", icon: "🌐" },
+{ id: "global-ops", label: "Global Ops", icon: "🌍" },
+{ id: "ops-router", label: "Ops Router", icon: "🧭" },
 ];
 
 function AppShell() {
@@ -107,6 +111,10 @@ case "risk":
   return <SituationRoom />;
 case "world-pulse":
   return <WorldPulse />;
+  case "global-ops":
+  return <GlobalOps />;
+case "ops-router":
+  return <OpsRouterBoard />;
     }
   }, [activeTab]);
 
