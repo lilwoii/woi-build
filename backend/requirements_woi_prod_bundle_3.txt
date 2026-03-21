@@ -1,0 +1,3 @@
+# Bundle 3 adds small helpers; no heavy deps.
+# (pmxt integration is optional and will be wired in next bundle once you configure wallet/secrets)
+tenacity>=8.2.3

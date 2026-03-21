@@ -1,0 +1,12 @@
+.woi-trades-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.woi-trades-table th, .woi-trades-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  text-align: left;
+  white-space: nowrap;
+}
+.woi-trades-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }

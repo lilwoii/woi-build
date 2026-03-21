@@ -1,0 +1,22 @@
+/* WOI polish pack — subtle smoothness */
+.woi-card {
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+.woi-card:hover { transform: translateY(-1px); }
+
+.woi-btn {
+  transition: transform 120ms ease, filter 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+.woi-btn:active { transform: scale(0.98); }
+.woi-btn:hover { filter: brightness(1.05); }
+
+.woi-fade-in {
+  animation: woiFadeIn 220ms ease-out;
+}
+@keyframes woiFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

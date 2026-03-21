@@ -1,0 +1,8 @@
+.woi-alpha-wrap { display: grid; gap: 12px; }
+.woi-alpha-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.woi-alpha-pill {
+  font-size: 12px; font-weight: 900; letter-spacing: 0.6px;
+  padding: 6px 10px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+}

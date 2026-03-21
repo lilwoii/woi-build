@@ -1,0 +1,6 @@
+.woi-pt-grid { display:grid; gap:12px; }
+.woi-pt-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.woi-pt-pill { font-size:12px; font-weight:900; letter-spacing:0.6px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.06); }
+.woi-pt-table { width:100%; border-collapse:collapse; font-size:12px; }
+.woi-pt-table th, .woi-pt-table td { padding:10px 8px; border-bottom:1px solid rgba(255,255,255,0.06); text-align:left; white-space:nowrap; }
+.woi-pt-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
