@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional, Literal
 from datetime import datetime, timedelta
 from routers.woi_mega_router import router as woi_mega_router
+from routers.woi_chat_router import router as woi_chat_router
 
 import requests
 import shutil
@@ -229,6 +230,7 @@ app.add_middleware(
 # If you have extra training routes in training.py, keep them:
 app.include_router(training_router)
 app.include_router(woi_mega_router)
+app.include_router(woi_chat_router)
 
 clients: set[WebSocket] = set()
 price_cache: Dict[str, float] = {}

@@ -21,6 +21,7 @@ import GlobeIntel from "./pages/GlobeIntel";
 import WOIBrain from "./pages/WOIBrain";
 import ShadowTrading from "./pages/ShadowTrading";
 import RiskCenter from "./pages/RiskCenter";
+import WOIConsole from "./pages/WOIConsole";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
@@ -41,6 +42,7 @@ const TABS = [
 { id: "brain", label: "WOI Brain", icon: "🧠" },
 { id: "shadow", label: "Shadow", icon: "👻" },
 { id: "risk", label: "Risk", icon: "🛡️" },
+{ id: "woi-console", label: "WOI Console", icon: "🗣️" },
 ];
 
 function AppShell() {
@@ -91,6 +93,8 @@ case "shadow":
   return <ShadowTrading />;
 case "risk":
   return <RiskCenter />;
+  case "woi-console":
+  return <WOIConsole />;
     }
   }, [activeTab]);
 
