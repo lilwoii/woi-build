@@ -22,6 +22,7 @@ import WOIBrain from "./pages/WOIBrain";
 import ShadowTrading from "./pages/ShadowTrading";
 import RiskCenter from "./pages/RiskCenter";
 import WOIConsole from "./pages/WOIConsole";
+import WOICommandCenter from "./pages/WOICommandCenter";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
@@ -43,6 +44,7 @@ const TABS = [
 { id: "shadow", label: "Shadow", icon: "👻" },
 { id: "risk", label: "Risk", icon: "🛡️" },
 { id: "woi-console", label: "WOI Console", icon: "🗣️" },
+{ id: "woi-command-center", label: "Command Center", icon: "🗣️" },
 ];
 
 function AppShell() {
@@ -95,6 +97,8 @@ case "risk":
   return <RiskCenter />;
   case "woi-console":
   return <WOIConsole />;
+  case "woi-command-center":
+  return <WOICommandCenter />;
     }
   }, [activeTab]);
 
