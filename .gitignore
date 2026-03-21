@@ -1,0 +1,47 @@
+# -----------------------------
+# Python
+# -----------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+*.db
+
+# Virtual environments (VERY IMPORTANT)
+.venv/
+venv/
+backend/.venv/
+backend/venv/
+
+# -----------------------------
+# Node / React
+# -----------------------------
+node_modules/
+frontend/node_modules/
+frontend/node_modules/.cache/
+frontend/.cache/
+frontend/build/
+dist/
+
+# -----------------------------
+# Environment variables
+# -----------------------------
+.env
+.env.*
+
+# -----------------------------
+# OS junk
+# -----------------------------
+.DS_Store
+Thumbs.db
+
+# -----------------------------
+# WOI runtime data
+# -----------------------------
+data/
+logs/
+cache/
+chromadb/
+memory_store/

@@ -1,0 +1,45 @@
+/* src/index.css – global base styles */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #020712;
+  color: #f5f7ff;
+}
+
+#root {
+  height: 100vh;
+}
+
+
+/* --- App Shell Layout Fix (sidebar connected, no page-scroll needed) --- */
+html, body { height: 100%; }
+body { margin: 0; }
+#root { height: 100vh; }
+
+.appRoot { height: 100vh; width: 100vw; display: flex; overflow: hidden; }
+.appMain { flex: 1 1 auto; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+.appTopBar { flex: 0 0 auto; }
+.appContent { flex: 1 1 auto; min-height: 0; overflow: auto; padding: 16px; }
+
+/* consistent dark buttons */
+.softBtn {
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.softBtn:hover { background: rgba(255,255,255,0.10); }
+.softBtn:active { transform: translateY(1px); }
+.softBtnPrimary { background: rgba(0,255,200,0.14); border-color: rgba(0,255,200,0.35); }
+.softBtnDanger { background: rgba(255,70,70,0.12); border-color: rgba(255,70,70,0.35); }

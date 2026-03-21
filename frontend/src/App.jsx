@@ -1,0 +1,106 @@
+// frontend/src/App.jsx
+import React, { useEffect, useMemo, useState } from "react";
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./components/Dashboard";
+import Portfolio from "./components/Portfolio";
+import TradeHistory from "./components/TradeHistory";
+import AILab from "./components/AILab";
+import Backtesting from "./components/Backtesting";
+import Alerts from "./components/Alerts";
+import LivePNL from "./components/LivePNL";
+import Casino from "./components/Casino";
+import CongressTracker from "./components/CongressTracker";
+import WhaleScanner from "./components/WhaleScanner";
+import PredictionMarkets from "./components/PredictionMarkets";
+import OpenBB from "./components/OpenBB";
+import Settings from "./components/Settings";
+import Strategies from "./components/Strategies";
+import UserMenu from "./components/UserMenu";
+import { ThemeProvider, useTheme } from "./theme/ThemeContext";
+
+const TABS = [
+  { id: "dashboard", label: "Dashboard", icon: "📊" },
+  { id: "portfolio", label: "Portfolio", icon: "💼" },
+  { id: "history", label: "Trade History", icon: "📜" },
+  { id: "ai-lab", label: "AI Trainer", icon: "🧪" },
+  { id: "backtest", label: "Backtesting", icon: "⏪" },
+  { id: "alerts", label: "Alerts", icon: "🚨" },
+  { id: "livepnl", label: "Live PnL", icon: "💹" },
+  { id: "polymarket", label: "Polymarket", icon: "🗳️" },
+  { id: "whales", label: "Whales", icon: "🐳" },
+  { id: "congress", label: "Congress", icon: "🏛️" },
+  { id: "openbb", label: "OpenBB", icon: "🧰" },
+  { id: "casino", label: "Casino", icon: "🎰" },
+  { id: "strategies", label: "Strategies", icon: "🧠" },
+  { id: "settings", label: "Settings", icon: "⚙️" },
+];
+
+function AppShell() {
+  const [activeTab, setActiveTab] = useState(() => localStorage.getItem("woi_active_tab") || "dashboard");
+
+  // persist active tab
+  useEffect(() => {
+    localStorage.setItem("woi_active_tab", activeTab);
+  }, [activeTab]);
+
+  const render = useMemo(() => {
+    switch (activeTab) {
+      case "dashboard":
+        return <Dashboard />;
+      case "portfolio":
+        return <Portfolio />;
+      case "history":
+        return <TradeHistory />;
+      case "ai-lab":
+        return <AILab />;
+      case "backtest":
+        return <Backtesting />;
+      case "alerts":
+        return <Alerts />;
+      case "livepnl":
+        return <LivePNL />;
+      case "polymarket":
+        return <PredictionMarkets />;
+      case "whales":
+        return <WhaleScanner />;
+      case "congress":
+        return <CongressTracker />;
+      case "openbb":
+        return <OpenBB />;
+      case "casino":
+        return <Casino />;
+      case "strategies":
+      return <Strategies />;
+    case "settings":
+      return <Settings />;
+    default:
+        return <Dashboard />;
+    }
+  }, [activeTab]);
+
+  return (
+    <div className="app-root">
+      <Sidebar tabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <div className="app-main">
+        <div className="app-topbar">
+          <div className="appTitle">
+            <div className="brand">WOI&apos;s Assistant</div>
+            <div className="subtitle">AI Trading Suite</div>
+          </div>
+          <div style={{ flex: 1 }} />
+          <UserMenu />
+        </div>
+
+        <div className="app-content">{render}</div>
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppShell />
+    </ThemeProvider>
+  );
+}
