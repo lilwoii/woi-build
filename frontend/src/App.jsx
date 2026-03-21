@@ -17,6 +17,10 @@ import Settings from "./components/Settings";
 import Strategies from "./components/Strategies";
 import UserMenu from "./components/UserMenu";
 import { ThemeProvider, useTheme } from "./theme/ThemeContext";
+import GlobeIntel from "./pages/GlobeIntel";
+import WOIBrain from "./pages/WOIBrain";
+import ShadowTrading from "./pages/ShadowTrading";
+import RiskCenter from "./pages/RiskCenter";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
@@ -33,6 +37,10 @@ const TABS = [
   { id: "casino", label: "Casino", icon: "🎰" },
   { id: "strategies", label: "Strategies", icon: "🧠" },
   { id: "settings", label: "Settings", icon: "⚙️" },
+  { id: "globe-intel", label: "Globe Intel", icon: "🌍" },
+{ id: "brain", label: "WOI Brain", icon: "🧠" },
+{ id: "shadow", label: "Shadow", icon: "👻" },
+{ id: "risk", label: "Risk", icon: "🛡️" },
 ];
 
 function AppShell() {
@@ -75,6 +83,14 @@ function AppShell() {
       return <Settings />;
     default:
         return <Dashboard />;
+		case "globe-intel":
+  return <GlobeIntel />;
+case "brain":
+  return <WOIBrain />;
+case "shadow":
+  return <ShadowTrading />;
+case "risk":
+  return <RiskCenter />;
     }
   }, [activeTab]);
 
