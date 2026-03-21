@@ -1,0 +1,16 @@
+# WOI Bundle Requirements Placeholder
+# These were missing in your repo
+# Add or merge into your main requirements.txt as needed
+
+fastapi
+uvicorn
+requests
+pydantic
+websockets
+numpy
+pandas
+scipy
+scikit-learn
+aiohttp
+beautifulsoup4
+lxml
