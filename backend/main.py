@@ -13,6 +13,7 @@ from routers.woi_chat_router import router as woi_chat_router
 from routers.woi_conversation_router import router as woi_conversation_router
 from routers.woi_situation_router import router as woi_situation_router
 from routers.woi_ops_router import router as woi_ops_router
+from routers.woi_agents_router import router as woi_agents_router
 
 import requests
 import shutil
@@ -237,6 +238,7 @@ app.include_router(woi_chat_router)
 app.include_router(woi_conversation_router)
 app.include_router(woi_situation_router)
 app.include_router(woi_ops_router)
+app.include_router(woi_agents_router)
 
 clients: set[WebSocket] = set()
 price_cache: Dict[str, float] = {}

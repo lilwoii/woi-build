@@ -27,6 +27,8 @@ import SituationRoom from "./pages/SituationRoom";
 import WorldPulse from "./pages/WorldPulse";
 import GlobalOps from "./pages/GlobalOps";
 import OpsRouterBoard from "./pages/OpsRouterBoard";
+import AgentsLab from "./pages/AgentsLab";
+import AlertSettings from "./pages/AlertSettings";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
@@ -53,6 +55,8 @@ const TABS = [
 { id: "world-pulse", label: "World Pulse", icon: "🌐" },
 { id: "global-ops", label: "Global Ops", icon: "🌍" },
 { id: "ops-router", label: "Ops Router", icon: "🧭" },
+{ id: "agents-lab", label: "Agents Lab", icon: "🤖" },
+{ id: "alert-settings", label: "Alert Settings", icon: "🔔" },
 ];
 
 function AppShell() {
@@ -115,6 +119,10 @@ case "world-pulse":
   return <GlobalOps />;
 case "ops-router":
   return <OpsRouterBoard />;
+  case "agents-lab":
+  return <AgentsLab />;
+case "alert-settings":
+  return <AlertSettings />;
     }
   }, [activeTab]);
 
