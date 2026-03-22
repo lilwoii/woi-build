@@ -29,6 +29,10 @@ import GlobalOps from "./pages/GlobalOps";
 import OpsRouterBoard from "./pages/OpsRouterBoard";
 import AgentsLab from "./pages/AgentsLab";
 import AlertSettings from "./pages/AlertSettings";
+import IngestionDesk from "./pages/IngestionDesk";
+import IngestionDesk from "./pages/IngestionDesk";
+import Watchlists from "./pages/Watchlists";
+import ChartIntel from "./pages/ChartIntel";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
@@ -57,6 +61,9 @@ const TABS = [
 { id: "ops-router", label: "Ops Router", icon: "🧭" },
 { id: "agents-lab", label: "Agents Lab", icon: "🤖" },
 { id: "alert-settings", label: "Alert Settings", icon: "🔔" },
+{ id: "ingestion-desk", label: "Ingestion", icon: "🛰️" },
+{ id: "watchlists", label: "Watchlists", icon: "👀" },
+{ id: "chart-intel", label: "Chart Intel", icon: "📊" },
 ];
 
 function AppShell() {
@@ -123,6 +130,12 @@ case "ops-router":
   return <AgentsLab />;
 case "alert-settings":
   return <AlertSettings />;
+  case "ingestion-desk":
+  return <IngestionDesk />;
+  case "watchlists":
+  return <Watchlists />;
+case "chart-intel":
+  return <ChartIntel />;
     }
   }, [activeTab]);
 

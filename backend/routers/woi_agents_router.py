@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Body, Query
 
-from woi_core.agents.council import WOIAgentCouncil
-from woi_core.agents.registry import AgentRegistry
+from woi_core.agents.council_engine import AgentCouncilEngine
+from woi_core.agents.agent_registry import AgentRegistry
 from woi_core.alerts.preferences import AlertPreferencesStore
 from woi_core.integrations.discord_broadcasts import DiscordBroadcasts
 
 router = APIRouter(prefix="/api/woi/agents", tags=["WOI Agents"])
 
 REGISTRY = AgentRegistry()
-COUNCIL = WOIAgentCouncil()
+COUNCIL = AgentCouncilEngine()
 ALERTS = AlertPreferencesStore()
 DISCORD = DiscordBroadcasts()
 
@@ -22,7 +22,9 @@ def agents_registry():
 
 @router.post("/deliberate")
 def agents_deliberate(payload: dict = Body(...), mode: str = Query(default="fast")):
-    result = COUNCIL.deliberate(payload=payload, mode=mode)
+    REGISTRY.set_train_mode(mode)
+result = COUNCIL.evaluate(payload=payload)
+result["mode"] = REGISTRY.train_mode
 
     prefs = ALERTS.get()["prefs"]
     if prefs.get("discord_enabled") and result["avg_urgency"] >= 0.75:
