@@ -33,6 +33,8 @@ import IngestionDesk from "./pages/IngestionDesk";
 import IngestionDesk from "./pages/IngestionDesk";
 import Watchlists from "./pages/Watchlists";
 import ChartIntel from "./pages/ChartIntel";
+import ExecutionCenter from "./pages/ExecutionCenter";
+import LearningLab from "./pages/LearningLab";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
@@ -64,6 +66,8 @@ const TABS = [
 { id: "ingestion-desk", label: "Ingestion", icon: "🛰️" },
 { id: "watchlists", label: "Watchlists", icon: "👀" },
 { id: "chart-intel", label: "Chart Intel", icon: "📊" },
+{ id: "execution-center", label: "Execution", icon: "💸" },
+{ id: "learning-lab", label: "Learning", icon: "🧠" },
 ];
 
 function AppShell() {
@@ -136,6 +140,10 @@ case "alert-settings":
   return <Watchlists />;
 case "chart-intel":
   return <ChartIntel />;
+  case "execution-center":
+  return <ExecutionCenter />;
+case "learning-lab":
+  return <LearningLab />;
     }
   }, [activeTab]);
 

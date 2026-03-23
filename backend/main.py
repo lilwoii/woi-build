@@ -18,6 +18,8 @@ from routers.woi_ingestion_router import router as woi_ingestion_router
 from routers.woi_ingestion_router import router as woi_ingestion_router
 from routers.woi_watchlist_router import router as woi_watchlist_router
 from routers.woi_chart_router import router as woi_chart_router
+from routers.woi_execution_router import router as woi_execution_router
+from routers.woi_learning_router import router as woi_learning_router
 
 import requests
 import shutil
@@ -247,6 +249,8 @@ app.include_router(woi_ingestion_router)
 app.include_router(woi_ingestion_router)
 app.include_router(woi_watchlist_router)
 app.include_router(woi_chart_router)
+app.include_router(woi_execution_router)
+app.include_router(woi_learning_router)
 
 clients: set[WebSocket] = set()
 price_cache: Dict[str, float] = {}
