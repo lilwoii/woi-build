@@ -30,7 +30,6 @@ import OpsRouterBoard from "./pages/OpsRouterBoard";
 import AgentsLab from "./pages/AgentsLab";
 import AlertSettings from "./pages/AlertSettings";
 import IngestionDesk from "./pages/IngestionDesk";
-import IngestionDesk from "./pages/IngestionDesk";
 import Watchlists from "./pages/Watchlists";
 import ChartIntel from "./pages/ChartIntel";
 import ExecutionCenter from "./pages/ExecutionCenter";

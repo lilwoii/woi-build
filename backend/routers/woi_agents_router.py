@@ -23,8 +23,8 @@ def agents_registry():
 @router.post("/deliberate")
 def agents_deliberate(payload: dict = Body(...), mode: str = Query(default="fast")):
     REGISTRY.set_train_mode(mode)
-result = COUNCIL.evaluate(payload=payload)
-result["mode"] = REGISTRY.train_mode
+    result = COUNCIL.evaluate(payload=payload)
+    result["mode"] = REGISTRY.train_mode
 
     prefs = ALERTS.get()["prefs"]
     if prefs.get("discord_enabled") and result["avg_urgency"] >= 0.75:

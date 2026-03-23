@@ -3230,8 +3230,6 @@ async def app_version():
 # ---------------------- Casino (SIMULATION + COACH) ----------------------
 # Safe mode only: no automation of real casino sites. This is for demo + advisory.
 
-@app.post(
-
 @app.post("/casino/simulate")
 async def casino_simulate(payload: dict):
     """
@@ -3277,9 +3275,16 @@ async def casino_simulate(payload: dict):
     elif game.startswith("horse"):
         rec, why = "NO_BET", "Without odds and field details, it's better to avoid a bet."
 
-    return {"ok": True, "mode": "sim", "recommendation": rec, "reasoning": why, "echo": {"game": game, "text": text}}
+    return {
+        "ok": True,
+        "mode": "sim",
+        "recommendation": rec,
+        "reasoning": why,
+        "echo": {"game": game, "text": text},
+    }
 
-"/casino/start")
+
+@app.post("/casino/start")
 async def casino_start_route(payload: Dict[str, Any]):
     return await casino_start(payload)
 

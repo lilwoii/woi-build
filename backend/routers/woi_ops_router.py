@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Body, Query
 
-from woi_core.intel.source_adapters import SourceAdapterRegistry
-from woi_core.intel.event_matcher import EventMatcher
+from intel.source_adapters import SourceAdapterRegistry
+from intel.event_matcher import EventMatcher
 from woi_core.ops.strategy_router import StrategyOpsRouter
 from woi_core.desktop.command_palette import DesktopCommandPalette
 
