@@ -35,6 +35,9 @@ import Watchlists from "./pages/Watchlists";
 import ChartIntel from "./pages/ChartIntel";
 import ExecutionCenter from "./pages/ExecutionCenter";
 import LearningLab from "./pages/LearningLab";
+import AlertCenterPage from "./pages/AlertCenterPage";
+import DesktopControl from "./pages/DesktopControl";
+import TopModuleBar from "./components/desktop/TopModuleBar";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
@@ -68,6 +71,8 @@ const TABS = [
 { id: "chart-intel", label: "Chart Intel", icon: "📊" },
 { id: "execution-center", label: "Execution", icon: "💸" },
 { id: "learning-lab", label: "Learning", icon: "🧠" },
+{ id: "alert-center", label: "Alert Center", icon: "🔔" },
+{ id: "desktop-control", label: "Desktop", icon: "🖥️" },
 ];
 
 function AppShell() {
@@ -144,6 +149,10 @@ case "chart-intel":
   return <ExecutionCenter />;
 case "learning-lab":
   return <LearningLab />;
+  case "alert-center":
+  return <AlertCenterPage />;
+case "desktop-control":
+  return <DesktopControl />;
     }
   }, [activeTab]);
 
