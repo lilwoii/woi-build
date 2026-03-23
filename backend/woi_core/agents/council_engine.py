@@ -4,7 +4,7 @@ from typing import Dict, Any, List
 from datetime import datetime, timezone
 
 from woi_core.agents.agent_registry import AgentRegistry
-from woi_core.intel.event_matcher import EventMatcher
+from intel.event_matcher import EventMatcher
 
 
 def utc_now() -> str:

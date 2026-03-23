@@ -15,7 +15,6 @@ from routers.woi_situation_router import router as woi_situation_router
 from routers.woi_ops_router import router as woi_ops_router
 from routers.woi_agents_router import router as woi_agents_router
 from routers.woi_ingestion_router import router as woi_ingestion_router
-from routers.woi_ingestion_router import router as woi_ingestion_router
 from routers.woi_watchlist_router import router as woi_watchlist_router
 from routers.woi_chart_router import router as woi_chart_router
 from routers.woi_execution_router import router as woi_execution_router
@@ -246,7 +245,6 @@ app.include_router(woi_conversation_router)
 app.include_router(woi_situation_router)
 app.include_router(woi_ops_router)
 app.include_router(woi_agents_router)
-app.include_router(woi_ingestion_router)
 app.include_router(woi_ingestion_router)
 app.include_router(woi_watchlist_router)
 app.include_router(woi_chart_router)

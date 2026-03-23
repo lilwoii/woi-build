@@ -27,15 +27,15 @@ def agents_deliberate(payload: dict = Body(...), mode: str = Query(default="fast
     result["mode"] = REGISTRY.train_mode
 
     prefs = ALERTS.get()["prefs"]
-    if prefs.get("discord_enabled") and result["avg_urgency"] >= 0.75:
+    if prefs.get("discord_enabled") and result.get("avg_urgency", 0) >= 0.75:
         DISCORD.emit(
             title=f"🧠 WOI Council Alert ({result['mode']})",
-            body=result["summary"],
-            level="warn" if result["avg_urgency"] < 0.9 else "error",
+            body=result.get("summary", ""),
+            level="warn" if result.get("avg_urgency", 0) < 0.9 else "error",
             fields=[
-                {"name": "confidence", "value": str(result["avg_confidence"])},
-                {"name": "urgency", "value": str(result["avg_urgency"])},
-                {"name": "symbols", "value": ", ".join(result["linked_symbols"][:6]) or "-"},
+                {"name": "confidence", "value": str(result.get("avg_confidence", 0))},
+                {"name": "urgency", "value": str(result.get("avg_urgency", 0))},
+                {"name": "symbols", "value": ", ".join(result.get("linked_symbols", [])[:6]) or "-"},
             ],
         )
 

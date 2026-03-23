@@ -36,7 +36,6 @@ import ExecutionCenter from "./pages/ExecutionCenter";
 import LearningLab from "./pages/LearningLab";
 import AlertCenterPage from "./pages/AlertCenterPage";
 import DesktopControl from "./pages/DesktopControl";
-import TopModuleBar from "./components/desktop/TopModuleBar";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: "📊" },
