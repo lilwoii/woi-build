@@ -132,17 +132,21 @@ const Dashboard = () => {
   }, [demoMode, symbol]);
 
 // ---------------------------
-  // WebSocket handling
-  // ---------------------------
-  useEffect(() => {
-    if (!WS_URL) return;
+// WebSocket handling
+// ---------------------------
+useEffect(() => {
+  if (!WS_URL || demoMode || !symbol) return;
 
+  let ws = null;
+  let closed = false;
+
+  try {
     setWsStatus("connecting");
-    const ws = new WebSocket(`${WS_URL}?symbol=${symbol}`);
+    ws = new WebSocket(`${WS_URL}?symbol=${encodeURIComponent(symbol)}`);
     wsRef.current = ws;
 
     ws.onopen = () => {
-      setWsStatus("connected");
+      if (!closed) setWsStatus("connected");
     };
 
     ws.onmessage = (event) => {
@@ -155,7 +159,7 @@ const Dashboard = () => {
 
         if (data.type === "notification") {
           setNotifications((prev) => [
-            { id: Date.now(), message: data.message },
+            { id: Date.now(), message: data.message ?? "New notification" },
             ...prev.slice(0, 49),
           ]);
         }
@@ -164,22 +168,30 @@ const Dashboard = () => {
           setAiInsight(data.payload || data);
         }
       } catch (err) {
-        console.error("WS message parse error:", err);
+        console.warn("WS message parse error:", err);
       }
     };
 
     ws.onerror = () => {
-      setWsStatus("error");
+      if (!closed) setWsStatus("error");
+      console.warn("WebSocket unavailable");
     };
 
     ws.onclose = () => {
-      setWsStatus("disconnected");
+      if (!closed) setWsStatus("disconnected");
     };
+  } catch (err) {
+    console.warn("WebSocket init failed:", err);
+    setWsStatus("error");
+  }
 
-    return () => {
-      ws.close();
-    };
-  }, [symbol]);
+  return () => {
+    closed = true;
+    try {
+      if (ws) ws.close();
+    } catch {}
+  };
+}, [symbol, demoMode]);
 
   // ---------------------------
   // Initial settings + alerts
@@ -223,50 +235,66 @@ const Dashboard = () => {
   }, [symbol]);
 
   // ---------------------------
-  // Load initial dashboard data
-  // ---------------------------
-  useEffect(() => {
-    const fetchInitial = async () => {
-      try {
-        // price
-        const priceRes = await fetch(
-          `${API_BASE_URL}/price?symbol=${encodeURIComponent(symbol)}`
-        );
-        if (priceRes.ok) {
-          const data = await priceRes.json();
-          if (data.price != null) setPrice(data.price);
+// Load initial dashboard data
+// ---------------------------
+useEffect(() => {
+  const fetchInitial = async () => {
+    try {
+      // price
+      const priceRes = await fetch(
+        `${API_BASE_URL}/price?symbol=${encodeURIComponent(symbol)}`
+      );
+      if (priceRes.ok) {
+        const data = await priceRes.json();
+        if (data && data.price != null) {
+          setPrice(data.price);
         }
-
-        // watchlist
-        const wlRes = await fetch(`${API_BASE_URL}/watchlist`);
-        if (wlRes.ok) {
-          const data = await wlRes.json();
-          setWatchlist(Array.isArray(data) ? data : []);
-        }
-
-        // notifications (optional)
-        const notifRes = await fetch(`${API_BASE_URL}/notifications`);
-        if (notifRes.ok) {
-          const data = await notifRes.json();
-          if (Array.isArray(data)) {
-            setNotifications(
-              data
-                .map((n, idx) => ({
-                  id: n.id ?? idx,
-                  message: n.message ?? String(n),
-                }))
-                .slice(-50)
-                .reverse()
-            );
-          }
-        }
-      } catch (err) {
-        console.error("Error loading initial dashboard data", err);
+      } else {
+        console.warn("Price endpoint failed:", priceRes.status);
       }
-    };
 
-    fetchInitial();
-  }, [symbol]);
+      // watchlist
+      const wlRes = await fetch(`${API_BASE_URL}/watchlist`);
+      if (wlRes.ok) {
+        const data = await wlRes.json();
+        setWatchlist(Array.isArray(data) ? data : []);
+      } else {
+        console.warn("Watchlist endpoint failed:", wlRes.status);
+        setWatchlist([]);
+      }
+
+      // notifications (optional)
+      const notifRes = await fetch(`${API_BASE_URL}/notifications`);
+      if (notifRes.ok) {
+        const data = await notifRes.json();
+        if (Array.isArray(data)) {
+          setNotifications(
+            data
+              .map((n, idx) => ({
+                id: n.id ?? idx,
+                message: n.message ?? String(n),
+              }))
+              .slice(-50)
+              .reverse()
+          );
+        } else {
+          setNotifications([]);
+        }
+      } else if (notifRes.status === 404) {
+        console.warn("Notifications endpoint not available yet.");
+        setNotifications([]);
+      } else {
+        console.warn("Notifications endpoint failed:", notifRes.status);
+      }
+    } catch (err) {
+      console.error("Error loading initial dashboard data", err);
+      setWatchlist([]);
+      setNotifications([]);
+    }
+  };
+
+  fetchInitial();
+}, [symbol]);
 
   // ---------------------------
   // Symbol handling
@@ -484,20 +512,36 @@ const Dashboard = () => {
   // Daily brief (top-right pill)
   // ---------------------------
   const openDailyBrief = async () => {
-    setShowDailyBrief(true);
-    if (dailyBriefLoading) return;
-    setDailyBriefLoading(true);
-    try {
-      const res = await fetch(`${API_BASE_URL}/ai/daily-brief`);
-      const data = await res.json();
-      setDailyBrief(data);
-    } catch (e) {
-      console.error(e);
-      setDailyBrief({ ok: false, title: "Daily Brief", content: "Failed to load daily brief. Check backend." });
-    } finally {
-      setDailyBriefLoading(false);
+  setShowDailyBrief(true);
+  if (dailyBriefLoading) return;
+
+  setDailyBriefLoading(true);
+  try {
+    const res = await fetch(`${API_BASE_URL}/ai/daily-brief`);
+
+    if (!res.ok) {
+      throw new Error(`Daily brief failed: HTTP ${res.status}`);
     }
-  };
+
+    const contentType = res.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      const text = await res.text();
+      throw new Error(`Daily brief returned non-JSON: ${text.slice(0, 120)}`);
+    }
+
+    const data = await res.json();
+    setDailyBrief(data);
+  } catch (e) {
+    console.error(e);
+    setDailyBrief({
+      ok: false,
+      title: "Daily Brief",
+      content: "Failed to load daily brief. Check backend.",
+    });
+  } finally {
+    setDailyBriefLoading(false);
+  }
+};
 // ---------------------------
   // Watchlist
   // ---------------------------

@@ -1,40 +1,39 @@
-import React, { useEffect, useRef, useState } from "react";
-import { API_BASE_URL } from "../config";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
-/**
- * Small floating "ask the AI" widget.
- * - Posts to backend /coach/ask
- * - Keeps last messages locally in state
- */
-const AIChatWidget = ({ symbol }) => {
+const API_BASE_URL = "http://127.0.0.1:8000";
+
+function AIChatWidget({ symbol = "" }) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [msgs, setMsgs] = useState([
-
-  const loadStrategies = () => {
-    try {
-      const raw = localStorage.getItem("woi_strategies");
-      const arr = raw ? JSON.parse(raw) : [];
-      return Array.isArray(arr) ? arr.filter((s) => s && s.active) : [];
-    } catch {
-      return [];
-    }
-  };
-
     {
       role: "assistant",
-      text: "Ask me anything: “what should I trade today?”, “scan TSLA”, “how do I improve my results?”",
+      text: 'Ask me anything: "what should I trade today?", "scan TSLA", "how do I improve my results?"',
     },
   ]);
 
   const listRef = useRef(null);
 
+  const loadStrategies = () => {
+    try {
+      const raw = localStorage.getItem("woi_strategies");
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const strategies = useMemo(() => loadStrategies(), []);
+
   useEffect(() => {
     if (!open) return;
     setTimeout(() => {
-      if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
+      if (listRef.current) {
+        listRef.current.scrollTop = listRef.current.scrollHeight;
+      }
     }, 0);
   }, [open, msgs]);
 
@@ -50,15 +49,24 @@ const AIChatWidget = ({ symbol }) => {
       const res = await fetch(`${API_BASE_URL}/ai/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: input, strategies: loadStrategies() }),
+        body: JSON.stringify({
+          prompt: q,
+          symbol,
+          strategies,
+        }),
       });
+
       const data = await res.json().catch(() => ({}));
       const answer = data?.answer || "No response yet.";
+
       setMsgs((prev) => [...prev, { role: "assistant", text: answer }]);
     } catch (e) {
       setMsgs((prev) => [
         ...prev,
-        { role: "assistant", text: "⚠️ Failed to reach backend. Check server logs." },
+        {
+          role: "assistant",
+          text: "⚠️ Failed to reach backend. Check server logs.",
+        },
       ]);
     } finally {
       setSending(false);
@@ -135,21 +143,42 @@ const AIChatWidget = ({ symbol }) => {
               </div>
             </div>
 
-            <button
-              onClick={() => { setOpen(false); setExpanded(false); }}
-              style={{
-                borderRadius: 10,
-                border: "1px solid #111827",
-                background: "transparent",
-                color: "#e5e7eb",
-                padding: "6px 10px",
-                cursor: "pointer",
-                fontSize: 12,
-              }}
-              title="Close"
-            >
-              ✕
-            </button>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button
+                onClick={() => setExpanded((v) => !v)}
+                style={{
+                  borderRadius: 10,
+                  border: "1px solid #111827",
+                  background: "transparent",
+                  color: "#e5e7eb",
+                  padding: "6px 10px",
+                  cursor: "pointer",
+                  fontSize: 12,
+                }}
+                title={expanded ? "Collapse" : "Expand"}
+              >
+                {expanded ? "–" : "□"}
+              </button>
+
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  setExpanded(false);
+                }}
+                style={{
+                  borderRadius: 10,
+                  border: "1px solid #111827",
+                  background: "transparent",
+                  color: "#e5e7eb",
+                  padding: "6px 10px",
+                  cursor: "pointer",
+                  fontSize: 12,
+                }}
+                title="Close"
+              >
+                ✕
+              </button>
+            </div>
           </div>
 
           <div
@@ -235,6 +264,6 @@ const AIChatWidget = ({ symbol }) => {
       )}
     </div>
   );
-};
+}
 
 export default AIChatWidget;

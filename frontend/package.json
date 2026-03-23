@@ -5,14 +5,17 @@
   "author": "Woi",
   "main": "public/electron.js",
   "private": true,
+  "proxy": "http://127.0.0.1:8000",
   "homepage": ".",
   "dependencies": {
     "html2canvas": "^1.4.1",
     "lightweight-charts": "^5.0.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-globe.gl": "^2.37.0",
     "react-scripts": "5.0.1",
-    "recharts": "^3.5.1"
+    "recharts": "^3.5.1",
+    "three": "^0.183.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -36,7 +39,6 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {},
   "build": {
     "appId": "com.woi.assistant",
     "productName": "Woi's Assistant",

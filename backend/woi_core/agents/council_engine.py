@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import Dict, Any, List
 from datetime import datetime, timezone
 
-from woi_core.agents.agent_registry import AgentRegistry
+from .agent_registry import AgentRegistry
+from intel.source_adapters import SourceAdapterRegistry
 from intel.event_matcher import EventMatcher
 
 

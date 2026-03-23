@@ -2,9 +2,7 @@ from __future__ import annotations
 import os
 from .config import WOIConfig
 from .events import EventBus, WoiEvent
-from .memory.structured_store import StructuredMemoryStore
-from .memory.vector_store import VectorMemoryStore
-from .memory.retrieval import MemoryRetriever
+from .memory import StructuredMemoryStore, MemoryRetriever, VectorMemoryStore
 from .memory.watchlist_store import WatchlistStore
 from .memory.rules_store import RulesStore
 from .memory.settings_store import SettingsStore
@@ -18,9 +16,21 @@ class WOIRuntime:
         os.makedirs(cfg.data_dir, exist_ok=True)
         os.makedirs(cfg.log_dir, exist_ok=True)
 
-        self.bus = EventBus(log_dir=cfg.log_dir, discord_webhook_url=cfg.discord_webhook_url, discord_level=cfg.discord_log_level)
+        self.bus = EventBus(
+            log_dir=cfg.log_dir,
+            discord_webhook_url=cfg.discord_webhook_url,
+            discord_level=cfg.discord_log_level,
+        )
+
         self.structured = StructuredMemoryStore(cfg.memory_db_path)
-        self.vector = VectorMemoryStore(cfg.vector_db_path)
+
+        self.vector = None
+        if VectorMemoryStore is not None:
+            try:
+                self.vector = VectorMemoryStore(cfg.vector_db_path)
+            except Exception:
+                self.vector = None
+
         self.retriever = MemoryRetriever(self.structured, self.vector)
 
         self.watchlist = WatchlistStore(cfg.memory_db_path)
@@ -29,18 +39,30 @@ class WOIRuntime:
 
         self.router = WOIRouter(cfg, self.bus, self.retriever)
         self.modules = ModuleRegistry(cfg, self.bus)
-        self.strategy_engine = StrategyEngine(cfg, self.bus, self.modules, self.structured, self.vector, self.watchlist, self.rules)
-        self._started = False
 
-        self.polymarket_override = {"enabled": None, "dry_run": None}  # cached override
+        self.strategy_engine = StrategyEngine(
+            cfg=cfg,
+            bus=self.bus,
+            modules=self.modules,
+            structured=self.structured,
+            watchlist=self.watchlist,
+            rules=self.rules,
+            vector=self.vector,
+        )
+
+        self._started = False
+        self.polymarket_override = {"enabled": None, "dry_run": None}
 
     async def start(self):
         if self._started:
             return
+
         await self.structured.init()
         await self.watchlist.init()
         await self.rules.init()
         await self.settings.init()
+
+        # Load persisted overrides
 
         # Load persisted overrides
         o = await self.settings.get("polymarket_mode")
